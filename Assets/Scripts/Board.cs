@@ -90,7 +90,7 @@ public class Board : MonoBehaviour
     private void StartGame()
     {
         Destroy(hud_countDown);
-        SpawnPiece();
+     
     }
 
     public RectInt Bounds
@@ -116,10 +116,9 @@ public class Board : MonoBehaviour
     private void Start()
     {
      
-        SpawnPiece();
         StartCoroutine(Countdown(4));
-      
 
+        SpawnPiece();
     }
 
 
