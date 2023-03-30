@@ -2720,6 +2720,7 @@ MonoBehaviour:
   scoreFourLines: 1200
   hud_score: {fileID: 1345356329}
   hud_finalScore: {fileID: 11080551}
+  hud_countDown: {fileID: 2130546379}
 --- !u!114 &1303463117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2792,7 +2793,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 'Score:
+
+    0
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3379,6 +3384,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1345356328}
+  - {fileID: 2130546378}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3400,12 +3406,18 @@ GameObject:
   - component: {fileID: 1563063524}
   m_Layer: 5
   m_Name: Volume
+  - component: {fileID: 2130546378}
+  - component: {fileID: 2130546380}
+  - component: {fileID: 2130546379}
+  m_Layer: 5
+  m_Name: countDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!224 &1563063523
+--- !u!224 &2130546378
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4046,12 +4058,27 @@ RectTransform:
   m_SizeDelta: {x: 617.6597, y: 250.5593}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2093319114
+  m_GameObject: {fileID: 2130546377}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 7, y: 7, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533279912}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2130546379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093319112}
+  m_GameObject: {fileID: 2130546377}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
