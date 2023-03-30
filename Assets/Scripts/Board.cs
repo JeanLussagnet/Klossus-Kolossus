@@ -26,6 +26,8 @@ public class Board : MonoBehaviour
 
     private int clearedLines = 0;
     public TMP_Text hud_score;
+    public TMP_Text hud_countDown;
+    
 
     private int currentScore = 0;
     public void UpdateScore()
@@ -52,9 +54,41 @@ public class Board : MonoBehaviour
 
     public void UpdateUI()
     {
-        hud_score.text = currentScore.ToString();
+        hud_score.text = $"Score: \n {currentScore}";
     }
-  
+
+    
+
+    IEnumerator Countdown(int seconds)
+    {
+        
+        int count = seconds;
+
+        while (count > 0)
+        {
+
+            if (count == 1)
+            {
+                hud_countDown.text = "Go";
+            }
+            else
+            {
+           hud_countDown.text = (count-1).ToString();
+            }
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+   
+        StartGame();
+        
+    }
+
+    private void StartGame()
+    {
+        Destroy(hud_countDown);
+        SpawnPiece();
+    }
+
     public RectInt Bounds
     {
         get
@@ -71,14 +105,14 @@ public class Board : MonoBehaviour
         this.tilemap = GetComponentInChildren<Tilemap>();
         for (int i = 0; i < this.tetrominos.Length; i++)
         {
-            this.tetrominos[i].Intialize();
+            this.tetrominos[i].Initialize();
         }
     }
 
     private void Start()
     {
-     
-        SpawnPiece();
+        StartCoroutine(Countdown(4));
+      
 
     }
 

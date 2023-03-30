@@ -1,12 +1,14 @@
+﻿
+
 using System;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class Piece : MonoBehaviour
+public class Block : MonoBehaviour
 {
-    public Board Board { get; private set; }
+    public BoardCoop BoardCoop { get; private set; }
     public TetrominoData data { get; private set; }
     public Vector3Int Position { get; private set; }
     public Vector3Int[] cells { get; private set; }
@@ -14,15 +16,19 @@ public class Piece : MonoBehaviour
     public float stepDelay = 1f;
     public float lockDelay = 0.1f;
 
-    private float stepTime;
-    private float lockTime;
-    public void Initialize(Board board, Vector3Int position, TetrominoData data)
+    public bool isPlayer1;
+
+    internal float stepTime;
+    internal float lockTime;
+
+    public void Initialize(BoardCoop board, Vector3Int position, TetrominoData data)
     {
-        this.Board = board;
+        this.BoardCoop = board;
         this.Position = position;
         this.data = data;
         this.stepTime = Time.time + this.stepDelay;
         this.lockTime = 0f;
+     
         if (this.cells == null)
         {
             this.cells = new Vector3Int[data.cells.Length];
@@ -32,64 +38,97 @@ public class Piece : MonoBehaviour
         {
             this.cells[i] = (Vector3Int)data.cells[i];
         }
+
+
     }
+
 
     public void Update()
     {
-      
 
-        this.Board.Clear(this);
-
+        BoardCoop.Clear(this);
 
         this.lockTime += Time.deltaTime;
 
-
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.UpArrow) )
+        if (isPlayer1)
         {
-            if (this.Position.x > 0)
-            {
-                Rotate(1);
-            }
-            else
+
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 Rotate(-1);
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-            Rotate(1);
+            else if (Input.GetKeyDown(KeyCode.E))
+                Rotate(1);
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            Thread.Sleep(100);
-            Move(Vector2Int.left);
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Move(Vector2Int.left);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                Move(Vector2Int.right);
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Move(Vector2Int.down);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                HardDrop();
+            }
+            if (Time.time >= this.stepTime)
+            {
+                Step();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        else
         {
-            Thread.Sleep(100);
-            Move(Vector2Int.right);
+       
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Rotate(-1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                Move(Vector2Int.left);
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                Move(Vector2Int.right);
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Move(Vector2Int.down);
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                HardDrop();
+            }
+            if (Time.time >= this.stepTime)
+            {
+                Step();
+            }
+
+
         }
 
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
-            Thread.Sleep(100);
-            Move(Vector2Int.down);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HardDrop();
-        }
-        if (Time.time >= this.stepTime)
-        {
-            Step();
-        }
-        this.Board.Set(this);
-        
+
+        BoardCoop.Set(this);
+
 
     }
 
-    private void Step()
+
+    internal void Step()
     {
+
         this.stepTime = Time.time + this.stepDelay;
 
         Move(Vector2Int.down);
@@ -100,36 +139,39 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private void Lock()
+    internal void Lock()
     {
-        this.Board.Set(this);
-        this.Board.ClearLines();
-        this.Board.SpawnPiece();
+        BoardCoop.Set(this);
+        BoardCoop.ClearLines();
+        if (this.isPlayer1)
+            BoardCoop.SpawnPiece(true);
+        else
+            BoardCoop.SpawnPiece(false);
     }
 
-    private void HardDrop()
+    internal void HardDrop()
     {
         while (Move(Vector2Int.down))
             continue;
     }
 
-    private bool Move(Vector2Int translation)
+    internal bool Move(Vector2Int translation)
     {
-        Vector3Int newPosition = this.Position;
+        Vector3Int newPosition = Position;
         newPosition.x += translation.x;
         newPosition.y += translation.y;
-        bool valid = this.Board.IsValidPosition(this, newPosition);
+        bool valid = BoardCoop.IsValidPosition(this, newPosition);
 
         if (valid)
         {
-            this.Position = newPosition;
-            this.lockTime = 0f;
+            Position = newPosition;
+            lockTime = 0f;
         }
 
         return valid;
     }
 
-    private void Rotate(int direction)
+    internal void Rotate(int direction)
     {
         int originalRotationIndex = this.RotationIndex;
         this.RotationIndex += Wrap(this.RotationIndex + direction, 0, 4);
@@ -143,7 +185,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private void ApplyRotationMatrix(int direction)
+    internal void ApplyRotationMatrix(int direction)
     {
         for (int i = 0; i < this.cells.Length; i++)
         {
@@ -171,7 +213,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private bool TestWallKicks(int rotationIndex, int direction)
+    internal bool TestWallKicks(int rotationIndex, int direction)
     {
         int wallKickIndex = GetWallKickIndex(rotationIndex, direction);
 
@@ -189,7 +231,7 @@ public class Piece : MonoBehaviour
         return false;
     }
 
-    private int GetWallKickIndex(int rotationIndex, int direction)
+    internal int GetWallKickIndex(int rotationIndex, int direction)
     {
         int wallKickIndex = rotationIndex * 2;
 
@@ -197,16 +239,12 @@ public class Piece : MonoBehaviour
         {
             wallKickIndex--;
         }
-        else if (direction > 1)
-        {
-            wallKickIndex++;
-        }
         return Wrap(wallKickIndex, 0, this.data.wallKicks.GetLength(0));
     }
 
 
 
-    private int Wrap(int input, int min, int max)
+    internal int Wrap(int input, int min, int max)
     {
         if (input < min)
         {
