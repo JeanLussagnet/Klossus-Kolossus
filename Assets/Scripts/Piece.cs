@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -42,7 +43,14 @@ public class Piece : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.UpArrow) )
         {
-            Rotate(-1);
+            if (this.Position.x > 0)
+            {
+                Rotate(1);
+            }
+            else
+            {
+                Rotate(-1);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.E))
             Rotate(1);
@@ -184,6 +192,10 @@ public class Piece : MonoBehaviour
         if (direction < 0)
         {
             wallKickIndex--;
+        }
+        else if (direction > 1)
+        {
+            wallKickIndex++;
         }
         return Wrap(wallKickIndex, 0, this.data.wallKicks.GetLength(0));
     }
