@@ -1,15 +1,17 @@
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Tilemaps;
 
 
-
 public class Board : MonoBehaviour
 {
+    public static event Action GameOverEvent;
     public Tilemap tilemap { get; private set; }
     public TetrominoData[] tetrominos;
     public Piece activePiece1 { get; private set; }
@@ -26,8 +28,10 @@ public class Board : MonoBehaviour
 
     private int clearedLines = 0;
     public TMP_Text hud_score;
+    public TMP_Text hud_finalScore;
 
     private int currentScore = 0;
+
     public void UpdateScore()
     {
         if (clearedLines > 0)
@@ -79,14 +83,13 @@ public class Board : MonoBehaviour
     {
      
         SpawnPiece();
-
     }
 
 
     public void SpawnPiece()
     {
 
-        int random = Random.Range(0, this.tetrominos.Length);
+        int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
         TetrominoData data = this.tetrominos[random];
 
         this.activePiece1.Initialize(this, spawnPosition1, data);
@@ -107,7 +110,22 @@ public class Board : MonoBehaviour
 
     private void GameOver()
     {
+        Time.timeScale = 0f;
+        hud_finalScore.text = currentScore.ToString();
+        GameOverEvent?.Invoke();
+    }
+
+    public void PlayAgain()
+    {
+        currentScore = 0;
         this.tilemap.ClearAllTiles();
+        Time.timeScale = 1f;
+    }
+
+    public void Exit()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void Set(Piece piece)
