@@ -6879,7 +6879,7 @@ GameObject:
   - component: {fileID: 1843192538}
   - component: {fileID: 1843192537}
   m_Layer: 0
-  m_Name: Sebbe
+  m_Name: SebbeBakgrundbild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
