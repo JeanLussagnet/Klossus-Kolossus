@@ -13,6 +13,7 @@ public class Piece : MonoBehaviour
     public int RotationIndex { get; private set; }
     private float stepDelay = 1.05f;
     public float lockDelay = 0.1f;
+    public bool isNextBlock;
 
     private float stepTime;
     private float lockTime;
@@ -42,6 +43,9 @@ public class Piece : MonoBehaviour
         }
         else
         {
+            if(!isNextBlock)
+            {
+
 
             this.Board.Clear(this);
 
@@ -89,6 +93,13 @@ public class Piece : MonoBehaviour
                 Step();
             }
             this.Board.Set(this);
+            }
+            else
+            {
+
+                return;
+               
+            }
         }
 
 

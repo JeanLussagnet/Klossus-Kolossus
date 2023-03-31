@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,11 +15,17 @@ public class Board : MonoBehaviour
     public static event Action GameOverEvent;
     public Tilemap tilemap { get; private set; }
     public TetrominoData[] tetrominos;
-    public Piece activePiece1 { get; private set; }
+    public Piece activePiece1;
+    public Piece NextBlock;
 
     public Vector3Int spawnPosition1 = new Vector3Int(-1, 8, 0);
   
     public Vector2Int boardSize = new Vector2Int(10, 20);
+    
+
+    public Vector3Int nextBlockPosition = new Vector3Int(7, 7, 0);
+    public Vector2Int nextBlockSize = new Vector2Int(4, 4);
+    
 
     public int scoreOneLine = 40;
 
@@ -113,8 +120,20 @@ public class Board : MonoBehaviour
 
     private void StartGame()
     {
-       
+
+        QueuePiece();
         SpawnPiece();
+
+    }
+
+    public void QueuePiece()
+    {
+        int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
+        TetrominoData data = this.tetrominos[random];
+
+        this.NextBlock.Initialize(this, nextBlockPosition, data);
+        Set(NextBlock);
+        
 
     }
 
@@ -129,8 +148,8 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        
-        this.activePiece1 = GetComponentInChildren<Piece>();
+        //this.NextBlock = GetComponentInChildren<Piece>();
+        //this.activePiece1 = GetComponentInChildren<Piece>();
         this.tilemap = GetComponentInChildren<Tilemap>();
         for (int i = 0; i < this.tetrominos.Length; i++)
         {
@@ -147,10 +166,15 @@ public class Board : MonoBehaviour
     public void SpawnPiece()
     {
 
-        int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
-        TetrominoData data = this.tetrominos[random];
+        
+        //int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
+        //TetrominoData data = this.tetrominos[random];
 
-        this.activePiece1.Initialize(this, spawnPosition1, data);
+
+
+        this.activePiece1.Initialize(this, spawnPosition1, NextBlock.data);
+        Clear(NextBlock);
+        QueuePiece();
 
         if (IsValidPosition(this.activePiece1, spawnPosition1))
         {
