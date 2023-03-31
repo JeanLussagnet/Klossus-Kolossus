@@ -17,10 +17,13 @@ public class Board : MonoBehaviour
     public TetrominoData[] tetrominos;
     public Piece activePiece1;
     public Piece NextBlock;
+    public Piece HeldPiece;
 
     public Vector3Int spawnPosition1 = new Vector3Int(-1, 8, 0);
   
     public Vector2Int boardSize = new Vector2Int(10, 20);
+
+    public Vector3Int holdPosition = new Vector3Int(-9, 7, 0);
     
 
     public Vector3Int nextBlockPosition = new Vector3Int(7, 7, 0);
@@ -72,14 +75,14 @@ public class Board : MonoBehaviour
 
     private void UpdateLevel()
     {
-        //if (numberOfClearedLines / 10 > 0 && numberOfClearedLines < 200)
-        //    level = (numberOfClearedLines / 10) + 1;
-        //else if (numberOfClearedLines / 10 >= 20)
-        //    level = 20;
+        if (numberOfClearedLines / 10 > 0 && numberOfClearedLines < 200)
+            level = (numberOfClearedLines / 10) + 1;
+        else if (numberOfClearedLines / 10 >= 20)
+            level = 20;
 
-        //else
-        //    level = 1;
-        
+        else
+            level = 1;
+
 
 
     }
@@ -125,6 +128,44 @@ public class Board : MonoBehaviour
         SpawnPiece();
 
     }
+
+    public void HoldPiece(TetrominoData data)
+    {
+        
+        
+        if (HeldPiece.Position == holdPosition)
+        {
+            Clear(activePiece1);
+            this.activePiece1.Initialize(this, spawnPosition1,HeldPiece.data);
+            
+            Clear(HeldPiece);
+            this.HeldPiece.Initialize(this, holdPosition, data);
+            Set(HeldPiece);
+            
+            
+            if (IsValidPosition(this.activePiece1, spawnPosition1))
+            {
+
+                Set(this.activePiece1);
+
+            }
+            else
+            {
+
+                GameOver();
+            }
+        }
+        else
+        {
+            this.HeldPiece.Initialize(this, holdPosition, activePiece1.data);
+            Set (HeldPiece);
+            Clear(activePiece1);
+            SpawnPiece();
+        }
+        
+    }
+
+
 
     public void QueuePiece()
     {
