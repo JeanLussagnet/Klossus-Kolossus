@@ -14,7 +14,8 @@ public class Piece : MonoBehaviour
     private float stepDelay = 1.05f;
     public float lockDelay = 0.1f;
     public bool isNextBlock;
-
+    public bool isHeld;
+    public bool isHeldThisTurn { get; set; }
     private float stepTime;
     private float lockTime;
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
@@ -43,7 +44,7 @@ public class Piece : MonoBehaviour
         }
         else
         {
-            if(!isNextBlock)
+            if(!isNextBlock && !isHeld)
             {
 
 
@@ -84,6 +85,12 @@ public class Piece : MonoBehaviour
                 Move(Vector2Int.down);
             }
 
+            if (Input.GetKeyDown(KeyCode.C) && !isHeldThisTurn)
+                {
+                    Board.HoldPiece(this.data);
+                    isHeldThisTurn = !isHeldThisTurn;
+                }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 HardDrop();
@@ -122,6 +129,7 @@ public class Piece : MonoBehaviour
     {
         this.Board.Set(this);
         this.Board.ClearLines();
+        isHeldThisTurn = false;
         this.Board.SpawnPiece();
     }
 
