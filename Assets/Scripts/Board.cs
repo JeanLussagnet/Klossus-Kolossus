@@ -65,13 +65,13 @@ public class Board : MonoBehaviour
 
     private void UpdateLevel()
     {
-        if (numberOfClearedLines / 10 > 0 && numberOfClearedLines < 200)
-            level = (numberOfClearedLines / 10) + 1;
-        else if (numberOfClearedLines / 10 >= 20)
-            level = 20;
+        //if (numberOfClearedLines / 10 > 0 && numberOfClearedLines < 200)
+        //    level = (numberOfClearedLines / 10) + 1;
+        //else if (numberOfClearedLines / 10 >= 20)
+        //    level = 20;
 
-        else
-            level = 1;
+        //else
+        //    level = 1;
         
 
 
