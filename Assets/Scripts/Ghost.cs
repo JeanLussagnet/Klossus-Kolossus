@@ -22,10 +22,14 @@ public class Ghost : MonoBehaviour
 
     private void LateUpdate()
     {
-        Clear();
-        Copy();
-        Drop();
-        Set();
+        if (PauseMenu.isPaused) return;
+        else
+        {
+            Clear();
+            Copy();
+            Drop();
+            Set();
+        }
     }
 
     private void Clear()

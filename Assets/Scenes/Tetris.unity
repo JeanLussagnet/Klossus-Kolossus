@@ -4171,6 +4171,8 @@ MonoBehaviour:
   hud_score: {fileID: 1345356329}
   hud_finalScore: {fileID: 11080551}
   hud_countDown: {fileID: 1078520738}
+  countDownUI: {fileID: 1078520737}
+  level: 1
 --- !u!114 &1303463117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4183,7 +4185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b61855518d0e70143be3b6f2af71f259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepDelay: 1
   lockDelay: 0.1
 --- !u!1 &1324196265
 GameObject:
@@ -6970,8 +6971,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Game over
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6990,7 +6991,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -7021,7 +7022,7 @@ MonoBehaviour:
   checkPaddingRequired: 0
   m_isRichText: 1
   m_parseCtrlCharacters: 1
-  m_isOrthographic: 0
+  m_isOrthographic: 1
   m_isCullingEnabled: 0
   m_horizontalMapping: 0
   m_verticalMapping: 0

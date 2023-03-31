@@ -11,7 +11,7 @@ public class Piece : MonoBehaviour
     public Vector3Int Position { get; private set; }
     public Vector3Int[] cells { get; private set; }
     public int RotationIndex { get; private set; }
-    public float stepDelay = 1f;
+    private float stepDelay = 1.05f;
     public float lockDelay = 0.1f;
 
     private float stepTime;
@@ -36,61 +36,68 @@ public class Piece : MonoBehaviour
 
     public void Update()
     {
-      
-
-        this.Board.Clear(this);
-
-
-        this.lockTime += Time.deltaTime;
-
-
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.UpArrow) )
+        if (PauseMenu.isPaused)
         {
-            if (this.Position.x > 0)
+            return;
+        }
+        else
+        {
+
+            this.Board.Clear(this);
+
+
+            this.lockTime += Time.deltaTime;
+
+
+            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.UpArrow))
             {
+                if (this.Position.x > 0)
+                {
+                    Rotate(1);
+                }
+                else
+                {
+                    Rotate(-1);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
                 Rotate(1);
-            }
-            else
+
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
-                Rotate(-1);
+                Thread.Sleep(100);
+                Move(Vector2Int.left);
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-            Rotate(1);
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                Thread.Sleep(100);
+                Move(Vector2Int.right);
+            }
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            Thread.Sleep(100);
-            Move(Vector2Int.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            Thread.Sleep(100);
-            Move(Vector2Int.right);
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                Thread.Sleep(100);
+                Move(Vector2Int.down);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                HardDrop();
+            }
+            if (Time.time >= this.stepTime)
+            {
+                Step();
+            }
+            this.Board.Set(this);
         }
 
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
-            Thread.Sleep(100);
-            Move(Vector2Int.down);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HardDrop();
-        }
-        if (Time.time >= this.stepTime)
-        {
-            Step();
-        }
-        this.Board.Set(this);
-        
 
     }
 
     private void Step()
     {
-        this.stepTime = Time.time + this.stepDelay;
+        this.stepTime = Time.time + this.stepDelay - ((float)Board.level*0.05f);
 
         Move(Vector2Int.down);
 

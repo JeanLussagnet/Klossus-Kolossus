@@ -30,6 +30,10 @@ public class Board : MonoBehaviour
     public TMP_Text hud_score;
     public TMP_Text hud_finalScore;
     public TMP_Text hud_countDown;
+    public GameObject countDownUI;
+    private int numberOfClearedLines = 0;
+    public int level = 1;
+
     
 
     private int currentScore = 0;
@@ -38,22 +42,39 @@ public class Board : MonoBehaviour
     {
         if (clearedLines > 0)
         {
+            numberOfClearedLines += clearedLines;
+
             if(clearedLines == 1) {
-                currentScore += scoreOneLine;
+                currentScore += scoreOneLine*level;
             }
             else if(clearedLines ==2) {
-                currentScore += scoreTwoLines;
+                currentScore += scoreTwoLines*level;
             }
             else if(clearedLines ==3) {
-                currentScore += scoreThreeLines;
+                currentScore += scoreThreeLines * level;
             }
             else if(clearedLines ==4) { 
-                currentScore += scoreFourLines;
+                currentScore += scoreFourLines * level;
             }
             clearedLines = 0;
+            UpdateLevel();
             UpdateUI();
         }
         
+    }
+
+    private void UpdateLevel()
+    {
+        if (numberOfClearedLines / 10 > 0 && numberOfClearedLines < 200)
+            level = (numberOfClearedLines / 10) + 1;
+        else if (numberOfClearedLines / 10 >= 20)
+            level = 20;
+
+        else
+            level = 1;
+        
+
+
     }
 
     public void UpdateUI()
@@ -65,6 +86,8 @@ public class Board : MonoBehaviour
 
     IEnumerator Countdown(int seconds)
     {
+        PauseMenu.isPaused = true;
+        countDownUI.SetActive(true);
         
         int count = seconds;
 
@@ -82,15 +105,17 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(1);
             count--;
         }
-   
+        countDownUI.SetActive(false);
+        PauseMenu.isPaused = false;
         StartGame();
         
     }
 
     private void StartGame()
     {
-        Destroy(hud_countDown);
-     
+       
+        SpawnPiece();
+
     }
 
     public RectInt Bounds
@@ -115,10 +140,7 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-     
         StartCoroutine(Countdown(4));
-
-        SpawnPiece();
     }
 
 
