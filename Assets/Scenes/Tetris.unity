@@ -915,8 +915,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockDelay: 0.1
-  isNextBlock: 1
+  isNextBlock: 0
   isHeld: 1
+  isPlayer1: 0
 --- !u!4 &401316624
 Transform:
   m_ObjectHideFlags: 0
@@ -1062,7 +1063,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -305, y: 444.3}
+  m_AnchoredPosition: {x: -292, y: 322}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &418065066
@@ -2735,8 +2736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e96864420e5b5d4aa345418c9633d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundOnIcon: {fileID: 0}
-  soundOffIcon: {fileID: 0}
+  soundOnIcon: {fileID: 507361767}
+  soundOffIcon: {fileID: 334623174}
 --- !u!4 &832727593
 Transform:
   m_ObjectHideFlags: 0
@@ -3004,7 +3005,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 290.09998, y: 444.3}
+  m_AnchoredPosition: {x: 279, y: 322}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &959840223
@@ -3284,6 +3285,7 @@ MonoBehaviour:
   lockDelay: 0.1
   isNextBlock: 1
   isHeld: 0
+  isPlayer1: 0
 --- !u!4 &1016954554
 Transform:
   m_ObjectHideFlags: 0
@@ -4717,12 +4719,19 @@ MonoBehaviour:
     tile: {fileID: 11400000, guid: eab4bbb35a98c714bb81d89e2a5bb11d, type: 2}
     cells: []
   activePiece1: {fileID: 1642399710}
-  NextBlock: {fileID: 1016954553}
-  HeldPiece: {fileID: 401316623}
+  NextBlock1: {fileID: 1016954553}
+  HeldPiece1: {fileID: 401316623}
+  activePiece2: {fileID: 0}
+  NextBlock2: {fileID: 0}
+  HeldPiece2: {fileID: 0}
+  isCoOp: 0
   spawnPosition1: {x: -1, y: 8, z: 0}
+  spawnPosition2: {x: 0, y: 0, z: 0}
   boardSize: {x: 10, y: 20}
-  holdPosition: {x: -9, y: 7, z: 0}
-  nextBlockPosition: {x: 7, y: 7, z: 0}
+  holdPosition1: {x: -9, y: 6, z: 0}
+  holdPosition2: {x: 0, y: 0, z: 0}
+  nextBlockPosition2: {x: 0, y: 0, z: 0}
+  nextBlockPosition1: {x: 8, y: 6, z: 0}
   nextBlockSize: {x: 4, y: 4}
   scoreOneLine: 40
   scoreTwoLines: 100
@@ -4864,7 +4873,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 303.4, y: 247.7}
+  m_AnchoredPosition: {x: 279, y: 137}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1345356329
@@ -5887,6 +5896,7 @@ MonoBehaviour:
   lockDelay: 0.1
   isNextBlock: 0
   isHeld: 0
+  isPlayer1: 0
 --- !u!1 &1644854447
 GameObject:
   m_ObjectHideFlags: 0
