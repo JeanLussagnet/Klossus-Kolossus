@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool isPaused;
     public GameObject PauseMenuUI;
-
+    public GameObject SettingsMenuPaused;
 
     void Update()
     {
@@ -29,6 +29,7 @@ public class PauseMenu : MonoBehaviour
         }
         else
         {
+            SettingsMenuPaused.SetActive(false);
             PauseMenuUI.SetActive(false);
             Time.timeScale = 1;
         }
