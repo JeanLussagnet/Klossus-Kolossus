@@ -2,6 +2,7 @@ using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,19 +17,26 @@ public class Board : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     public TetrominoData[] tetrominos;
     public Piece activePiece1;
-    public Piece NextBlock;
-    public Piece HeldPiece;
+    public Piece NextBlock1;
+    public Piece HeldPiece1;
+    public Piece activePiece2;
+    public Piece NextBlock2;
+    public Piece HeldPiece2;
 
-    public Vector3Int spawnPosition1 = new Vector3Int(-1, 8, 0);
-  
-    public Vector2Int boardSize = new Vector2Int(10, 20);
 
-    public Vector3Int holdPosition = new Vector3Int(-9, 7, 0);
-    
+    public bool isCoOp;
+    public Vector3Int spawnPosition1;/* = isCoOp ? new Vector3Int(-4,8,0) : new Vector3Int(-1, 8, 0);*/
+    public Vector3Int spawnPosition2;/* = new Vector3Int(6, 8, 0);*/
+    public Vector2Int boardSize;/* = isCoOp ? new Vector2Int(20, 20) : new Vector2Int(10, 20);*/
 
-    public Vector3Int nextBlockPosition = new Vector3Int(7, 7, 0);
+    public Vector3Int holdPosition1;
+    public Vector3Int holdPosition2;
+
+
+    public Vector3Int nextBlockPosition2;
+    public Vector3Int nextBlockPosition1;
     public Vector2Int nextBlockSize = new Vector2Int(4, 4);
-    
+
 
     public int scoreOneLine = 40;
 
@@ -44,7 +52,7 @@ public class Board : MonoBehaviour
     private int numberOfClearedLines = 0;
     public int level = 1;
 
-    
+
 
     private int currentScore = 0;
 
@@ -54,23 +62,27 @@ public class Board : MonoBehaviour
         {
             numberOfClearedLines += clearedLines;
 
-            if(clearedLines == 1) {
-                currentScore += scoreOneLine*level;
+            if (clearedLines == 1)
+            {
+                currentScore += scoreOneLine * level;
             }
-            else if(clearedLines ==2) {
-                currentScore += scoreTwoLines*level;
+            else if (clearedLines == 2)
+            {
+                currentScore += scoreTwoLines * level;
             }
-            else if(clearedLines ==3) {
+            else if (clearedLines == 3)
+            {
                 currentScore += scoreThreeLines * level;
             }
-            else if(clearedLines ==4) { 
+            else if (clearedLines == 4)
+            {
                 currentScore += scoreFourLines * level;
             }
             clearedLines = 0;
             UpdateLevel();
             UpdateUI();
         }
-        
+
     }
 
     private void UpdateLevel()
@@ -92,13 +104,13 @@ public class Board : MonoBehaviour
         hud_score.text = $"Score: \n {currentScore}";
     }
 
-    
+
 
     IEnumerator Countdown(int seconds)
     {
         PauseMenu.isPaused = true;
         countDownUI.SetActive(true);
-        
+
         int count = seconds;
 
         while (count > 0)
@@ -110,59 +122,153 @@ public class Board : MonoBehaviour
             }
             else
             {
-           hud_countDown.text = (count-1).ToString();
+                hud_countDown.text = (count - 1).ToString();
             }
             yield return new WaitForSeconds(1);
             count--;
         }
         countDownUI.SetActive(false);
         PauseMenu.isPaused = false;
-        StartGame();
-        
+        //StartGame();
+
     }
 
     private void StartGame()
     {
 
-        QueuePiece();
-        SpawnPiece();
 
     }
 
     public void HoldPiece(TetrominoData data)
     {
-        
-        
-        if (HeldPiece.Position == holdPosition)
+
+        if (HeldPiece1.Position == holdPosition1)
         {
             Clear(activePiece1);
-            this.activePiece1.Initialize(this, spawnPosition1,HeldPiece.data);
-            
-            Clear(HeldPiece);
-            this.HeldPiece.Initialize(this, holdPosition, data);
-            Set(HeldPiece);
-            
-            
+            this.activePiece1.Initialize(this, spawnPosition1, HeldPiece1.data);
+
+            Clear(HeldPiece1);
+            this.HeldPiece1.Initialize(this, holdPosition1, data);
+            Set(HeldPiece1);
+
+
             if (IsValidPosition(this.activePiece1, spawnPosition1))
             {
-
                 Set(this.activePiece1);
-
             }
             else
             {
-
                 GameOver();
             }
         }
         else
         {
-            this.HeldPiece.Initialize(this, holdPosition, activePiece1.data);
-            Set (HeldPiece);
+            this.HeldPiece1.Initialize(this, holdPosition1, activePiece1.data);
+            Set(HeldPiece1);
             Clear(activePiece1);
             SpawnPiece();
         }
-        
+
+    }
+
+    public void HoldPiece(TetrominoData data, bool isPlayer1)
+    {
+
+
+        if (isPlayer1)
+        {
+            if (HeldPiece1.Position == holdPosition1)
+            {
+                Clear(activePiece1);
+                this.activePiece1.Initialize(this, spawnPosition1, HeldPiece1.data);
+
+                Clear(HeldPiece1);
+                this.HeldPiece1.Initialize(this, holdPosition1, data);
+                Set(HeldPiece1);
+
+
+                if (IsValidPosition(this.activePiece1, spawnPosition1))
+                {
+                    Set(this.activePiece1);
+                }
+                else
+                {
+                    GameOver();
+                }
+            }
+            else
+            {
+                this.HeldPiece1.Initialize(this, holdPosition1, activePiece1.data);
+                Set(HeldPiece1);
+                Clear(activePiece1);
+                SpawnPiece(true);
+            }
+        }
+        else
+        {
+            if (HeldPiece2.Position == holdPosition2)
+            {
+                Clear(activePiece2);
+                this.activePiece2.Initialize(this, spawnPosition2, HeldPiece2.data);
+
+                Clear(HeldPiece2);
+                this.HeldPiece2.Initialize(this, holdPosition2, data);
+                Set(HeldPiece2);
+
+
+                if (IsValidPosition(this.activePiece2, spawnPosition2))
+                {
+                    Set(this.activePiece2);
+                }
+                else
+                {
+                    GameOver();
+                }
+            }
+            else
+            {
+                this.HeldPiece2.Initialize(this, holdPosition2, activePiece2.data);
+                Set(HeldPiece2);
+                Clear(activePiece2);
+                SpawnPiece(false);
+            }
+        }
+
+
+
+        //    var activePiece = isPlayer1 ? activePiece1 : activePiece2;
+        //    var spawnPosition = isPlayer1 ? spawnPosition1 : spawnPosition2;
+        //    var heldPiece = isPlayer1 ? HeldPiece1 : HeldPiece2;
+        //var heldPosition = isPlayer1 ? holdPosition1 : holdPosition2;
+
+
+        //if (heldPiece.Position == heldPosition)
+        //{
+        //    Clear(activePiece);
+        //    activePiece.Initialize(this, spawnPosition, heldPiece.data);
+
+        //    Clear(heldPiece);
+        //    heldPiece.Initialize(this, heldPosition, data);
+        //    Set(heldPiece);
+
+
+        //    if (IsValidPosition(activePiece, spawnPosition))
+        //    {
+        //        Set(activePiece);
+        //    }
+        //    else
+        //    {
+        //        GameOver();
+        //    }
+        //}
+        //else
+        //{
+        //    heldPiece.Initialize(this, heldPosition, data);
+        //    Set(heldPiece);
+        //    Clear(activePiece);
+        //    SpawnPiece();
+        //}
+
     }
 
 
@@ -172,12 +278,24 @@ public class Board : MonoBehaviour
         int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
         TetrominoData data = this.tetrominos[random];
 
-        this.NextBlock.Initialize(this, nextBlockPosition, data);
-        Set(NextBlock);
-        
+        this.NextBlock1.Initialize(this, nextBlockPosition1, data);
+        Set(NextBlock1);
+
 
     }
 
+    public void QueuePiece(bool isPlayer1)
+    {
+        var nextBlock = isPlayer1 ? NextBlock1 : NextBlock2;
+
+        var nextBlockPosition = isPlayer1 ? nextBlockPosition1 : nextBlockPosition2;
+        int random1 = UnityEngine.Random.Range(0, this.tetrominos.Length);
+        TetrominoData data = this.tetrominos[random1];
+        nextBlock.Initialize(this, nextBlockPosition, data);
+        Set(nextBlock);
+
+
+    }
     public RectInt Bounds
     {
         get
@@ -201,20 +319,26 @@ public class Board : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Countdown(4));
+        if (isCoOp)
+        {
+            QueuePiece(true);
+            QueuePiece(false);
+            SpawnPiece(true);
+            SpawnPiece(false);
+        }
+        else
+        {
+            QueuePiece();
+            SpawnPiece();
+        }
     }
 
 
     public void SpawnPiece()
     {
 
-        
-        //int random = UnityEngine.Random.Range(0, this.tetrominos.Length);
-        //TetrominoData data = this.tetrominos[random];
-
-
-
-        this.activePiece1.Initialize(this, spawnPosition1, NextBlock.data);
-        Clear(NextBlock);
+        this.activePiece1.Initialize(this, spawnPosition1, NextBlock1.data);
+        Clear(NextBlock1);
         QueuePiece();
 
         if (IsValidPosition(this.activePiece1, spawnPosition1))
@@ -226,6 +350,25 @@ public class Board : MonoBehaviour
         else
         {
 
+            GameOver();
+        }
+    }
+
+    public void SpawnPiece(bool isPlayer1)
+    {
+        var activePiece = isPlayer1 ? activePiece1 : activePiece2;
+        var nextBlock = isPlayer1 ? NextBlock1 : NextBlock2;
+        var spawnPosition = isPlayer1 ? spawnPosition1 : spawnPosition2;
+
+        activePiece.Initialize(this, spawnPosition, nextBlock.data);
+        Clear(nextBlock);
+        QueuePiece(isPlayer1);
+        if (IsValidPosition(activePiece, spawnPosition))
+        {
+            Set(activePiece);
+        }
+        else
+        {
             GameOver();
         }
     }
@@ -282,7 +425,7 @@ public class Board : MonoBehaviour
 
             if (this.tilemap.HasTile(tilePosition))
                 return false;
-            
+
 
         }
         return true;
@@ -310,28 +453,64 @@ public class Board : MonoBehaviour
 
     private void LineClear(int row)
     {
-        RectInt bounds = this.Bounds;
-        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        if (isCoOp)
         {
-            Vector3Int position = new Vector3Int(col, row, 0);
-            this.tilemap.SetTile(position, null);
-        }
+            var activePiece = activePiece1.Position.y > activePiece2.Position.y ? activePiece1 : activePiece2;
+            Vector3Int[] activePiecePositions = new Vector3Int[activePiece.cells.Length];
+            for (int i = 0; i < activePiece.cells.Length; i++)
+            {
+                activePiecePositions[i] = activePiece.cells[i] + activePiece.Position;
+            }
 
-        while (row < bounds.yMax)
-        {
+            RectInt bounds = this.Bounds;
             for (int col = bounds.xMin; col < bounds.xMax; col++)
             {
-             
-               
-                Vector3Int position = new Vector3Int(col, row + 1, 0);
-                TileBase above = this.tilemap.GetTile(position);
-
-
-                position = new Vector3Int(col, row, 0);
-                this.tilemap.SetTile(position, above);
-             
+                Vector3Int position = new Vector3Int(col, row, 0);
+                this.tilemap.SetTile(position, null);
             }
-            row++;
+
+            while (row < bounds.yMax)
+            {
+                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                {
+                    Vector3Int abovePosition = new Vector3Int(col, row + 1, 0);
+                    TileBase above = this.tilemap.GetTile(abovePosition);
+                    Vector3Int currentPosition = new Vector3Int(col, row, 0);
+                    TileBase current = this.tilemap.GetTile(currentPosition);
+                    if (activePiecePositions.Contains(currentPosition) || activePiecePositions.Contains(abovePosition))
+                    {
+                        this.tilemap.SetTile(currentPosition, null);
+
+                    }
+                    else
+                    {
+                        this.tilemap.SetTile(currentPosition, above);
+                    }
+
+
+                }
+                row++;
+            }
+        }
+        else
+        {
+            RectInt bounds = this.Bounds;
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
+            {
+                Vector3Int position = new Vector3Int(col, row, 0);
+                this.tilemap.SetTile(position, null);
+            }
+            while (row < bounds.yMax)
+            {
+                for (int col = bounds.xMin; col < bounds.xMax; col++)
+                {
+                    Vector3Int position = new Vector3Int(col, row + 1, 0);
+                    TileBase above = this.tilemap.GetTile(position);
+                    position = new Vector3Int(col, row, 0);
+                    this.tilemap.SetTile(position, above);
+                }
+                row++;
+            }
         }
     }
 
