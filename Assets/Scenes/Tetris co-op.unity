@@ -735,10 +735,10 @@ MonoBehaviour:
   spawnPosition1: {x: -6, y: 8, z: 0}
   spawnPosition2: {x: 4, y: 8, z: 0}
   boardSize: {x: 20, y: 20}
-  holdPosition1: {x: -14, y: 0, z: 0}
+  holdPosition1: {x: -15, y: 0, z: 0}
   holdPosition2: {x: 13, y: 0, z: 0}
   nextBlockPosition2: {x: 13, y: 5, z: 0}
-  nextBlockPosition1: {x: -14, y: 5, z: 0}
+  nextBlockPosition1: {x: -15, y: 5, z: 0}
   nextBlockSize: {x: 4, y: 4}
   scoreOneLine: 40
   scoreTwoLines: 100
@@ -2124,7 +2124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -650, y: 391}
+  m_AnchoredPosition: {x: -712, y: 391}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &441446128
@@ -4952,7 +4952,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 997625841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.0946, y: 5.9482, z: 0}
+  m_LocalPosition: {x: -14.18, y: 5.99, z: 0}
   m_LocalScale: {x: 4.665755, y: 2.781147, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5644,7 +5644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -650, y: 141}
+  m_AnchoredPosition: {x: -712, y: 141}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1050578407
@@ -6602,7 +6602,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405277359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.08, y: 1.22, z: 0}
+  m_LocalPosition: {x: -14.13, y: 1.22, z: 0}
   m_LocalScale: {x: 4.665755, y: 2.781147, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
