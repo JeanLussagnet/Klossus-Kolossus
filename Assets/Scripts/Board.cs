@@ -22,6 +22,8 @@ public class Board : MonoBehaviour
     public Piece activePiece2;
     public Piece NextBlock2;
     public Piece HeldPiece2;
+    
+   
 
 
     public bool isCoOp;
@@ -51,6 +53,7 @@ public class Board : MonoBehaviour
     public GameObject countDownUI;
     private int numberOfClearedLines = 0;
     public int level = 1;
+    public int FinalScore { get; set; }
 
 
 
@@ -129,15 +132,11 @@ public class Board : MonoBehaviour
         }
         countDownUI.SetActive(false);
         PauseMenu.isPaused = false;
-        //StartGame();
+      
 
     }
 
-    private void StartGame()
-    {
-
-
-    }
+ 
 
     public void HoldPiece(TetrominoData data)
     {
@@ -307,8 +306,7 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        //this.NextBlock = GetComponentInChildren<Piece>();
-        //this.activePiece1 = GetComponentInChildren<Piece>();
+    
         this.tilemap = GetComponentInChildren<Tilemap>();
         for (int i = 0; i < this.tetrominos.Length; i++)
         {
@@ -376,13 +374,20 @@ public class Board : MonoBehaviour
 
     private void GameOver()
     {
+        FinalScore = currentScore;
         Time.timeScale = 0f;
         hud_finalScore.text = currentScore.ToString();
+
+        
+      
         GameOverEvent?.Invoke();
+
     }
 
     public void PlayAgain()
     {
+
+        level = 1;
         currentScore = 0;
         this.tilemap.ClearAllTiles();
         Time.timeScale = 1f;

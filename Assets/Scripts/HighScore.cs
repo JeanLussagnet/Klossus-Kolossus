@@ -2,19 +2,46 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HighScore : MonoBehaviour
 {
     private Transform entryContainer;
     private Transform entryTemplate;
- 
+    public TMP_InputField input_name;
+    public Button btnClick;
     private List<Transform> highscoreEntryTransformList;
+    public Board board;
+
+    public HighScore(Board board)
+    {
+
+        this.board = board;
+
+    }
+    public void GetInputOnClickHandler()
+    {
+        string name = input_name.text;
+        if (name.Length > 10)
+        {
+            name = name.Substring(0, 10);
+        }
+        else
+            name = input_name.text;
+        
+        AddHighscoreEntry(board.FinalScore, name);
+    }
     private void Awake()
     {
+        if(transform.Find("HighScoreEntryContainer")) {
+        
         entryContainer = transform.Find("HighScoreEntryContainer");
         entryTemplate = entryContainer.Find("HighScoreEntryTemplate");
 
         entryTemplate.gameObject.SetActive(false);
+        
+        }
 
       
         string jsonString = PlayerPrefs.GetString("highscoreTable");
@@ -50,11 +77,11 @@ public class HighScore : MonoBehaviour
         string rankString;
         switch (rank)
         {
-            default:
-                rankString = rank + "TH"; break;
             case 1: rankString = rank + "ST"; break;
             case 2: rankString = "2ND"; break;
             case 3: rankString = "3RD"; break;
+            default:
+                rankString = rank + "TH"; break;
         }
         entryTransform.Find("posText").GetComponent<TextMeshProUGUI>().text = rankString;
 
@@ -70,6 +97,18 @@ public class HighScore : MonoBehaviour
         transformList.Add(entryTransform);
     }
 
+    public bool CheckIfHighscore(int score)
+    {
+        string jsonString = PlayerPrefs.GetString("highscoreTable");
+        Highscores highscores = JsonUtility.FromJson<Highscores>(jsonString);
+        var list = highscores.highscoreEntryList.OrderBy(x => x.score).First();
+        if (list.score < score)
+        {
+            return true;
+        }
+
+        return false; 
+    }
 
     private void AddHighscoreEntry(int score, string name)
     {
