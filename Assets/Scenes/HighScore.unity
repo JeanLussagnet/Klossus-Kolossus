@@ -2183,3 +2183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611c161ca8f46ef4bb774152c2d8b59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input_name: {fileID: 0}
+  btnClick: {fileID: 0}
+  board: {fileID: 0}
+  isHighscoreSceneLoaded: 1

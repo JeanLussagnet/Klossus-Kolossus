@@ -15,6 +15,13 @@ public class UIManager : MonoBehaviour
     public GameObject HighScore;
 
 
+    public UIManager(Board board, HighScore highScore)
+    {
+        this.board = board;
+        this.highScore = highScore;
+
+    }
+
     private void OnEnable()
     {
         Board.GameOverEvent += EnableGameOverMenu;
@@ -25,15 +32,9 @@ public class UIManager : MonoBehaviour
         Board.GameOverEvent -= EnableGameOverMenu;
     }
 
-    public UIManager(Board board, HighScore highScore)
-    {
-        this.board = board;
-        this.highScore = highScore;
-
-    }
-
     public void EnableGameOverMenu()
     {
+            gameOverMenu.SetActive(true);
         if (highScore.CheckIfHighscore(board.FinalScore))
         {
             HighScore.SetActive(true);
@@ -41,7 +42,6 @@ public class UIManager : MonoBehaviour
         else
         {
             HighScore.SetActive(false);
-            gameOverMenu.SetActive(true);
 
         }
      

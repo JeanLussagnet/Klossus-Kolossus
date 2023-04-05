@@ -13,6 +13,7 @@ public class HighScore : MonoBehaviour
     public Button btnClick;
     private List<Transform> highscoreEntryTransformList;
     public Board board;
+    public bool isHighscoreSceneLoaded;
 
     public HighScore(Board board)
     {
@@ -34,14 +35,13 @@ public class HighScore : MonoBehaviour
     }
     private void Awake()
     {
-        if(transform.Find("HighScoreEntryContainer")) {
+        if(isHighscoreSceneLoaded) {
         
         entryContainer = transform.Find("HighScoreEntryContainer");
         entryTemplate = entryContainer.Find("HighScoreEntryTemplate");
 
         entryTemplate.gameObject.SetActive(false);
         
-        }
 
       
         string jsonString = PlayerPrefs.GetString("highscoreTable");
@@ -61,6 +61,7 @@ public class HighScore : MonoBehaviour
             CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
         }
 
+        }
 
 
 
