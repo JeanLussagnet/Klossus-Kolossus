@@ -18,11 +18,22 @@ public class Piece : MonoBehaviour
     public bool isHeldThisTurn2 { get; set; }
     private float stepTime;
     private float lockTime;
+    private int speedCheck;
     public void Initialize(Board board, Vector3Int position, TetrominoData data)
     {
         this.Board = board;
         this.Position = position;
         this.data = data;
+      if (Board.level != speedCheck)
+        {
+            speedCheck = Board.level;
+            if (this.stepDelay < 0.1f)
+                this.stepDelay -= 0.1f;
+            else if (this.stepDelay < 0.4f)
+                this.stepDelay -= 0.05f;
+            else
+                this.stepDelay -= 0.15f;
+        }
         this.stepTime = Time.time + this.stepDelay;
         this.lockTime = 0f;
         if (this.cells == null)
@@ -193,7 +204,7 @@ public class Piece : MonoBehaviour
 
     private void Step()
     {
-        this.stepTime = Time.time + this.stepDelay - ((float)Board.level * 0.05f);
+        this.stepTime = Time.time + this.stepDelay;
 
         Move(Vector2Int.down);
 

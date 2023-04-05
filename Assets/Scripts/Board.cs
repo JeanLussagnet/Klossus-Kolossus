@@ -389,21 +389,6 @@ public class Board : MonoBehaviour
 
         level = 1;
         currentScore = 0;
-        if (isCoOp)
-        {
-            Clear(HeldPiece2);
-            Clear(HeldPiece1);
-            Clear(NextBlock2);
-            Clear(NextBlock1);
-            Clear(activePiece1);
-            Clear(activePiece2);
-        }
-        else
-        {
-            Clear(activePiece1);
-            Clear(NextBlock1);
-            Clear(HeldPiece1);
-        }
 
         this.tilemap.ClearAllTiles();
         Time.timeScale = 1f;

@@ -74,7 +74,7 @@ public class HighScore : MonoBehaviour
         entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
         entryTemplate.gameObject.SetActive(true);
 
-        int rank = transformList.Count+1;
+        int rank = transformList.Count()+1;
         string rankString;
         switch (rank)
         {
