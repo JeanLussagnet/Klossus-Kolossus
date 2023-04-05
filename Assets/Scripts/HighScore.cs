@@ -30,26 +30,27 @@ public class HighScore : MonoBehaviour
         }
         else
             name = input_name.text;
-        
+
         AddHighscoreEntry(board.FinalScore, name);
     }
     private void Awake()
     {
-        if(isHighscoreSceneLoaded) {
-        
+        if (!isHighscoreSceneLoaded)
+            return;
+
         entryContainer = transform.Find("HighScoreEntryContainer");
         entryTemplate = entryContainer.Find("HighScoreEntryTemplate");
 
-        entryTemplate.gameObject.SetActive(false);
-        
 
-      
+
+
+
         string jsonString = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonString);
 
         if (highscores.highscoreEntryList != null)
         {
-        highscores.highscoreEntryList = highscores.highscoreEntryList.OrderByDescending(x => x.score).Take(5).ToList();
+            highscores.highscoreEntryList = highscores.highscoreEntryList.OrderByDescending(x => x.score).Take(5).ToList();
         }
 
 
@@ -60,8 +61,8 @@ public class HighScore : MonoBehaviour
         {
             CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
         }
+        entryTemplate.gameObject.SetActive(false);
 
-        }
 
 
 
@@ -72,9 +73,9 @@ public class HighScore : MonoBehaviour
         Transform entryTransform = Instantiate(entryTemplate, container);
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
         entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
-        entryTemplate.gameObject.SetActive(true);
+        //entryTemplate.gameObject.SetActive(true);
 
-        int rank = transformList.Count()+1;
+        int rank = transformList.Count() + 1;
         string rankString;
         switch (rank)
         {
@@ -94,7 +95,7 @@ public class HighScore : MonoBehaviour
         string name = highScoreEntry.name;
         entryTransform.Find("nameText").GetComponent<TextMeshProUGUI>().text = name;
 
-       entryTransform.Find("background").gameObject.SetActive(rank%2==1);
+        entryTransform.Find("background").gameObject.SetActive(rank % 2 == 1);
         transformList.Add(entryTransform);
     }
 
@@ -108,12 +109,12 @@ public class HighScore : MonoBehaviour
             return true;
         }
 
-        return false; 
+        return false;
     }
 
     private void AddHighscoreEntry(int score, string name)
     {
-        HighscoreEntry highScoreEntry = new HighscoreEntry {score = score, name=name };
+        HighscoreEntry highScoreEntry = new HighscoreEntry { score = score, name = name };
 
         string jsonString = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonString);
@@ -143,7 +144,7 @@ public class HighScore : MonoBehaviour
     [System.Serializable]
     private class HighscoreEntry
     {
-    public int score;
-    public string name;
+        public int score;
+        public string name;
     }
 }
